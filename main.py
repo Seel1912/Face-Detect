@@ -22,14 +22,11 @@ def Mahoa (images):
 
 encodeListKnow = Mahoa(images)
 
-imgTest = cv2.imread("test/test.jpg")
+imgTest = cv2.imread("test/test.png")
 
 while True:
     framS = cv2.resize(imgTest,(0,0),None,fx=0.5,fy=0.5)
     framS = cv2.cvtColor(framS, cv2.COLOR_BGR2RGB)
-
-    # framS = face_recognition.load_image_file("test/test.jpg")
-    # framS = cv2.resize(frame, (0, 0), None, fx=0.5, fy=0.5)
 
     facecurFrame = face_recognition.face_locations(framS)
     encodecurFrame = face_recognition.face_encodings(framS)
@@ -39,7 +36,7 @@ while True:
         faceDis = face_recognition.face_distance(encodeListKnow,encodeFace)
         matchIndex = np.argmin(faceDis)
 
-        if faceDis[matchIndex] < 0.65 :
+        if faceDis[matchIndex] < 0.5 :
             name = classNames[matchIndex].upper()
         else:
             name = "Unknown"
@@ -47,13 +44,9 @@ while True:
 
         y1, x2, y2, x1 = faceLoc
         y1, x2, y2, x1 = y1 * 2 , x2 * 2 , y2 * 2 , x1 * 2
-        cv2.rectangle(imgTest,(x1,y1), (x2,y2),(0,255,0),2)
-        cv2.putText(imgTest,name,(x2,y2),cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
+        cv2.rectangle(imgTest,(x1,y1), (x2,y2),(0,255,0),3)
+        cv2.putText(imgTest,name,(x1,y1),cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),1)
 
-    #     cv2.rectangle(frame,(),(255,0,255),2)
-    #     cv2.putText(frame,name,(facecurFrame[0],facecurFrame[1]),cv2.FONT_HERSHEY_COMPLEX,1,(255,255,255),2)
-    #
-    #
     cv2.imshow('imgtest',imgTest)
     if cv2.waitKey(1) == ord("q"):
         break
